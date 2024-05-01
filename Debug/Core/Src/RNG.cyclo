@@ -1,0 +1,8 @@
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rng.h:127:22:LL_RNG_Enable	1
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rng.h:168:26:LL_RNG_IsActiveFlag_DRDY	2
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rng.h:201:26:LL_RNG_IsActiveFlag_CEIS	2
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rng.h:212:26:LL_RNG_IsActiveFlag_SEIS	2
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rng.h:254:22:LL_RNG_EnableIT	1
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_rng.h:297:26:LL_RNG_ReadRandData32	1
+../Core/Src/RNG.c:10:6:RNG_Init	1
+../Core/Src/RNG.c:16:10:Get_Random_Number	5

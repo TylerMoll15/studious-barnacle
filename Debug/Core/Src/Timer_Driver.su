@@ -1,0 +1,16 @@
+../Core/Src/Timer_Driver.c:10:6:TIMER_init	24	static
+../Core/Src/Timer_Driver.c:64:6:TIMER_clock_control	24	static
+../Core/Src/Timer_Driver.c:71:6:TIMER_start	24	static
+../Core/Src/Timer_Driver.c:79:6:TIMER_stop	24	static
+../Core/Src/Timer_Driver.c:87:6:TIMER_reset	16	static
+../Core/Src/Timer_Driver.c:91:10:TIMER_get_timer_value	16	static
+../Core/Src/Timer_Driver.c:95:6:TIMER_interrupt_control	16	static
+../Core/Src/Timer_Driver.c:104:6:LED_TIMER5_init	80	static
+../Core/Src/Timer_Driver.c:126:6:LED_TIMER5_start	8	static
+../Core/Src/Timer_Driver.c:131:6:LED_TIMER5_stop	8	static
+../Core/Src/Timer_Driver.c:136:6:LED_TIMER5_reset	8	static
+../Core/Src/Timer_Driver.c:140:10:LED_TIMER5_get_ARR_value	4	static
+../Core/Src/Timer_Driver.c:144:10:LED_TIMER5_get_count_value	4	static
+../Core/Src/Timer_Driver.c:148:6:LED_TIMER5_configure_ARR	16	static
+../Core/Src/Timer_Driver.c:152:6:LED_TIMER5_specific_start	16	static
+../Core/Src/Timer_Driver.c:156:6:IRQ_TIMx_clear_pending	16	static

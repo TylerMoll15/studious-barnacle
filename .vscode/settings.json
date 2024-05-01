@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "menu.h": "c",
+        "lcd_driver.h": "c",
+        "touchlogic.h": "c",
+        "rng.h": "c",
+        "main.h": "c",
+        "timer.h": "c",
+        "applicationcode.h": "c",
+        "timer_driver.h": "c",
+        "stm32f4xx_hal.h": "c"
+    }
+}

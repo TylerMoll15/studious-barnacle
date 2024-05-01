@@ -1,0 +1,2 @@
+../Core/Src/touchLogic.c:3:6:checkTouchBounds	16	static
+../Core/Src/touchLogic.c:10:10:Check_Win	72	dynamic
