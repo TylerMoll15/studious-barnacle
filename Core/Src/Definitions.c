@@ -5,5 +5,3 @@
  *      Author: tyler
  */
 #include "Definitions.h"
-
-

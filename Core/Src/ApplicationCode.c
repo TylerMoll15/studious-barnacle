@@ -8,7 +8,9 @@
 #include "ApplicationCode.h"
 
 /* Static variables */
-
+static int x_win_history = 0;
+static int o_win_history = 0;
+static int tie_history = 0;
 
 extern void initialise_monitor_handles(void); 
 
@@ -64,6 +66,8 @@ void LCD_Touch_Polling_Demo()
 	uint32_t game_board[BOARD_DIMENSION][BOARD_DIMENSION]; //player x
 	int screen_state = SCREEN_MENU;
 	int player_turn = false;
+	int winning_numb = NO_WINNER; //init to none
+	bool needs_to_increment = true;
 
 	p1_bounds.left_x = 63;
 	p1_bounds.top_y = 224;
@@ -114,8 +118,8 @@ void LCD_Touch_Polling_Demo()
 //			bool for if the player should switch
 			bool changePlayer = false;
 
-
 			if(screen_state == SCREEN_MENU){
+				needs_to_increment = true;
 				for(int i = 0; i < 2; i++){
 					if(checkTouchBounds(&touch_loc, player_select[i])){
 						printf("Player %d box pressed!", i+1);
@@ -136,7 +140,7 @@ void LCD_Touch_Polling_Demo()
 				for(int x = 0; x < 3; x++){
 					for(int y = 0; y < 3; y++){
 						if(checkTouchBounds(&touch_loc, game_grid[x][y])){
-							int winning_numb = NO_WINNER; //init to none
+
 							printf("Grid Square x = %d y = %d pressed\n", x, y);
 
 							if(!game_board[x][y]){
@@ -156,31 +160,7 @@ void LCD_Touch_Polling_Demo()
 						    	winning_numb = TIE;
 						    }
 
-							// if 1 player, automatically place 'O'
-							int rand_x;
-							int rand_y;
-							if(screen_state == SCREEN_1P){
-								int ran_sel_placement = 1;
 
-								// while rand indices not valid, re-call rand-int
-								while(ran_sel_placement && move_count != FULL_BOARD && winning_numb == NO_WINNER){
-									HAL_Delay(100);
-									rand_x = Get_Random_Number() % BOARD_DIMENSION;
-									HAL_Delay(100);
-									rand_y = Get_Random_Number() % BOARD_DIMENSION;
-
-									ran_sel_placement = game_board[rand_x][rand_y];
-								}
-							}
-
-//							drawing move logic
-
-							if(screen_state == SCREEN_1P && changePlayer){
-								Draw_Move(PLAYER_O_BOOL, game_grid[rand_x][rand_y]);
-								game_board[rand_x][rand_y] = PLAYER_O;
-								move_count++;
-								changePlayer = false;
-							}
 
 //							check win state
 						    uint8_t num_win_states = 8;
@@ -214,51 +194,85 @@ void LCD_Touch_Polling_Demo()
 						        }
 						    }
 
+														// if 1 player, automatically place 'O'
+							int rand_x;
+							int rand_y;
+							if(screen_state == SCREEN_1P){
+								int ran_sel_placement = 1;
+
+								// while rand indices already have placement, re-call rand-int
+								while(ran_sel_placement && move_count != FULL_BOARD && winning_numb == NO_WINNER){
+									HAL_Delay(100);
+									rand_x = Get_Random_Number() % BOARD_DIMENSION;
+									HAL_Delay(100);
+									rand_y = Get_Random_Number() % BOARD_DIMENSION;
+
+									ran_sel_placement = game_board[rand_x][rand_y];
+								}
+							}
+
+//							drawing move logic
+
+							if(screen_state == SCREEN_1P && changePlayer){
+								Draw_Move(PLAYER_O_BOOL, game_grid[rand_x][rand_y]);
+								game_board[rand_x][rand_y] = PLAYER_O;
+								move_count++;
+								changePlayer = false;
+							}
+
 						    if(move_count == FULL_BOARD){
 						    	winning_numb = TIE;
 						    }
 
-							// change screen
-						    if(winning_numb != NO_WINNER){
-						    	LCD_Clear(0, LCD_COLOR_MAGENTA);
-
-						    	switch(winning_numb){
-									case PLAYER_X:
-										writeWord("X Wins!", 310, 100);
-										break;
-									case PLAYER_O:
-										writeWord("O Wins!", 310, 100);
-										break;
-									case TIE:
-										writeWord("Tie!", 310, 100);
-										break;
-
-						    	}
-								screen_state = SCREEN_END;
-
+						    if(winning_numb != NO_WINNER) {
 								TIMER_stop(TIM5_);
-								TIMER_reset(TIM5_);
-								uint32_t game_length = TIMER_get_timer_value(TIM5_);
-								printf("game length after reset %ld", game_length);
+								screen_state = SCREEN_END;
+							}
 								break;
 
 						    }
 
 
-//							end check win state
 						}
 					}
 				}
 				if(changePlayer) player_turn = !player_turn;
-				uint32_t game_length = TIMER_get_timer_value(TIM5_);
-				printf("curr length: %ld", game_length);
 			}
 		else if(screen_state == SCREEN_END){
-			TIMER_stop(TIM5_);
-			uint32_t game_length = TIMER_get_timer_value(TIM5_);
-			TIMER_reset(TIM5_);
+			// change screen
+			if(winning_numb != NO_WINNER){
 
+//				end check win state
+			if (needs_to_increment){
+				LCD_Clear(0, LCD_COLOR_MAGENTA);
+				switch(winning_numb){
+					case PLAYER_X:
+						writeWord_("X Wins!", 310, 100, true);
+						x_win_history++;
+						break;
+					case PLAYER_O:
+						writeWord_("O Wins!", 310, 100, true);
+						o_win_history++;
+						break;
+					case TIE:
+						writeWord_("Tie!", 310, 100, true);
+						tie_history++;
+						break;
+				}
+				needs_to_increment = false;
+				}
 
+				writeWord_("Game Record:", 280, 130, false);
+				char history_string[100];
+				sprintf(history_string, "X: %d O: %d Tie: %d", x_win_history, o_win_history, tie_history);
+				writeWord_(history_string, 280, 150, false);
+				
+				char timing_string[100];
+				TIMER_stop(TIM5_);
+				uint32_t game_length = TIMER_get_timer_value(TIM5_);
+				sprintf(timing_string, "Length: %ld seconds", TIMER_convert_to_seconds(game_length));
+
+				writeWord_(timing_string, 280, 170, false);
 		}
 
 		} else {
@@ -268,7 +282,6 @@ void LCD_Touch_Polling_Demo()
 
 //		deal with button reset
 		int scheduledEvents = getScheduledEvents();
-
 		if(scheduledEvents && RESET_GAME_SCREEN_EVENT){
 			LCD_Clear(0, LCD_COLOR_CYAN);
 			writeWord("Resetting Game", 260, 100);
@@ -282,6 +295,18 @@ void LCD_Touch_Polling_Demo()
 			drawMenu();
 			removeSchedulerEvent(RESET_GAME_SCREEN_EVENT);
 			screen_state = SCREEN_MENU;
+			winning_numb = NO_WINNER;
+			move_count = 0;
+			player_turn = PLAYER_X_BOOL;
+			TIMER_reset(TIM5_);
+
+
+			//	clear game_board
+			for(int x = 0; x < BOARD_DIMENSION; x++){
+				for(int y = 0; y < BOARD_DIMENSION; y++){
+					game_board[x][y] = 0;
+				}
+			}
 		}
 
 	}

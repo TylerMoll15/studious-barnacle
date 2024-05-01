@@ -8,6 +8,7 @@
         "timer.h": "c",
         "applicationcode.h": "c",
         "timer_driver.h": "c",
-        "stm32f4xx_hal.h": "c"
+        "stm32f4xx_hal.h": "c",
+        "definitions.h": "c"
     }
 }

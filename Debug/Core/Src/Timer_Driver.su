@@ -14,3 +14,4 @@
 ../Core/Src/Timer_Driver.c:148:6:LED_TIMER5_configure_ARR	16	static
 ../Core/Src/Timer_Driver.c:152:6:LED_TIMER5_specific_start	16	static
 ../Core/Src/Timer_Driver.c:156:6:IRQ_TIMx_clear_pending	16	static
+../Core/Src/Timer_Driver.c:160:10:TIMER_convert_to_seconds	16	static

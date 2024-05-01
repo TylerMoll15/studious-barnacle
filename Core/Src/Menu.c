@@ -22,8 +22,8 @@ void drawMenu(){
 	LCD_DisplayChar(187,290,'_');
 	LCD_DisplayChar(202,290,'O');
 
-    writeWord("Player 1", 310, 100);
-    writeWord("Player 2", 310, 150);
+    writeWord("1 Player", 310, 100);
+    writeWord("2 Player", 310, 150);
 
 //    player 1 box
     struct Point boxTopLeft;
@@ -40,6 +40,28 @@ void drawMenu(){
 
 void writeWord(char* word, int start_x, int start_y){
     int letter_distance = 12;
+    char c = word[0];
+    int char_i = 0;
+    while(c != '\0'){
+        LCD_DisplayChar(start_x + (char_i * letter_distance), start_y, c);
+        char_i++;
+        c = word[char_i];
+    }
+}
+
+void writeWord_(char* word, int start_x, int start_y, bool fontLarge){
+    int letter_distance = 12;
+
+
+    if(fontLarge) {
+        LCD_SetFont(&Font16x24);
+        letter_distance = 12;
+    }
+    else{
+         LCD_SetFont(&Font12x12);
+         letter_distance = 8;
+    }
+
 
     char c = word[0];
     int char_i = 0;

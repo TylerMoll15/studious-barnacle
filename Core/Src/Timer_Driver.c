@@ -156,3 +156,7 @@ void LED_TIMER5_specific_start(uint32_t new_start_val){
 void IRQ_TIMx_clear_pending(uint8_t pinNumber, GPTIMR_RegDef_t* gp_timer){
     gp_timer->TIMx_SR &= ~(0x1 << pinNumber);
 }
+
+uint32_t TIMER_convert_to_seconds(uint32_t timer_val){
+	return (timer_val + 1)/(CLOCK_FREQ * CLOCK_DIV);
+}

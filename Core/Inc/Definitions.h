@@ -72,6 +72,8 @@ typedef struct {
 
 
 #define TIM5_ ((GPTIMR_RegDef_t*) TIM5_BASE)
+#define CLOCK_DIV 4
+
 
 
 

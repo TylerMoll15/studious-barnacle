@@ -57,6 +57,8 @@ void LED_TIMER5_configure_ARR(uint32_t ARR_value);
 
 void LED_TIMER5_specific_start(uint32_t new_start_val);
 
+uint32_t TIMER_convert_to_seconds(uint32_t timer_val);
+
 
 
 
@@ -109,5 +111,7 @@ void LED_TIMER5_specific_start(uint32_t new_start_val);
 
 // max
 #define MAX_32INT 0xFFFFFFFF
+
+#define CLOCK_FREQ 16000000
 
 #endif /* TIMER_DRIVER_H_ */
